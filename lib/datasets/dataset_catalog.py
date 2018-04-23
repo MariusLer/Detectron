@@ -188,20 +188,20 @@ DATASETS = {
     },
     'Face_dataset_train': {
         IM_DIR:
-            _DATA_DIR + '/train',
+            _DATA_DIR + 'face_dataset/train',
         ANN_FN:
-            _DATA_DIR + '/annotations/instances_train.json'
+            _DATA_DIR + 'face_dataset/annotations/instances_train.json'
     },
     'Face_dataset_val': {
         IM_DIR:
-            _DATA_DIR + '/validation',
+            _DATA_DIR + 'face_dataset/validation',
         ANN_FN:
-            _DATA_DIR + '/annotations/instances_validation.json'
+            _DATA_DIR + 'face_dataset/annotations/instances_validation.json'
     },
     'Face_dataset_test': {
         IM_DIR:
-            _DATA_DIR + '/test',
+            _DATA_DIR + 'face_dataset/test',
         ANN_FN:
-            _DATA_DIR + '/annotations/instances_test.json'
+            _DATA_DIR + 'face_dataset/annotations/instances_test.json'
     }
 }
