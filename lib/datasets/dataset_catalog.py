@@ -185,5 +185,23 @@ DATASETS = {
             _DATA_DIR + '/VOC2012/annotations/voc_2012_trainval.json',
         DEVKIT_DIR:
             _DATA_DIR + '/VOC2012/VOCdevkit2012'
+    },
+    'Face_dataset_train': {
+        IM_DIR:
+            _DATA_DIR + '/train',
+        ANN_FN:
+            _DATA_DIR + '/annotations/instances_train.json'
+    },
+    'Face_dataset_val': {
+        IM_DIR:
+            _DATA_DIR + '/validation',
+        ANN_FN:
+            _DATA_DIR + '/annotations/instances_validation.json'
+    },
+    'Face_dataset_test': {
+        IM_DIR:
+            _DATA_DIR + '/test',
+        ANN_FN:
+            _DATA_DIR + '/annotations/instances_test.json'
     }
 }
