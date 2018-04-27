@@ -13,6 +13,7 @@ import logging
 import os
 import sys
 import time
+import numpy as np
 
 from caffe2.python import workspace
 
@@ -24,7 +25,6 @@ from utils.timer import Timer
 import core.test_engine as infer_engine
 import datasets.dummy_datasets as dummy_datasets
 import utils.c2 as c2_utils
-import utils.logging
 import utils.vis as vis_utils
 
 c2_utils.import_detectron_ops()
@@ -56,7 +56,6 @@ def parse_args():
 
 
 def main(args):
-    logger = logging.getLogger(__name__)
     merge_cfg_from_file(args.cfg)
     cfg.NUM_GPUS = 1
     args.weights = cache_url(args.weights, cfg.DOWNLOAD_CACHE)
@@ -65,38 +64,32 @@ def main(args):
     dummy_coco_dataset = dummy_datasets.get_coco_dataset()
 
     cap = cv2.VideoCapture(0)
-
     while True:
         ret, frame = cap.read()
-
         timers = defaultdict(Timer)
         t = time.time()
         with c2_utils.NamedCudaScope(0):
             cls_boxes, cls_segms, cls_keyps = infer_engine.im_detect_all(
                 model, frame, None, timers=timers
             )
-        print("Drawing")
         image = vis_utils.vis_one_image_opencv(
-            frame[:, :, ::-1],  # BGR -> RGB for visualization
+            np.array(frame),
             cls_boxes,
-            #cls_segms,
-            #cls_keyps,
+            cls_segms,
+            cls_keyps,
             thresh=0.7,
             kp_thresh=2,
-            show_box = False,
-            #dataset=dummy_coco_dataset,
-            show_class=False
+            show_box = True,
+            show_class=True
         )
-        print(image)
-        print("Showing image")
         cv2.imshow('camera',image)
-        print("Done iter")
-        time.sleep(1)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+        print("Time:", time.time()-t)
     cap.release()
     cv2.destroyAllWindows()
 
 if __name__ == '__main__':
     workspace.GlobalInit(['caffe2', '--caffe2_log_level=0'])
-    utils.logging.setup_logging(__name__)
     args = parse_args()
     main(args)
